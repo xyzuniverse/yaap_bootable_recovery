@@ -272,7 +272,6 @@ static std::string ExtractPayloadProperties(ZipArchiveHandle zip) {
   static constexpr const char* AB_OTA_PAYLOAD_PROPERTIES = "payload_properties.txt";
   ZipEntry64 properties_entry;
   if (FindEntry(zip, AB_OTA_PAYLOAD_PROPERTIES, &properties_entry) != 0) {
-    LOG(ERROR) << "Failed to find " << AB_OTA_PAYLOAD_PROPERTIES;
     return {};
   }
   auto properties_entry_length = properties_entry.uncompressed_length;
@@ -392,8 +391,8 @@ static InstallResult TryUpdateBinary(Package* package, bool* wipe_cache,
   auto zip = package->GetZipArchiveHandle();
   bool has_metadata = ReadMetadataFromPackage(zip, &metadata);
 
-  bool package_is_ab = has_metadata && get_value(metadata, "ota-type") == OtaTypeToString(OtaType::AB);
-  const bool package_is_brick = has_metadata && get_value(metadata, "ota-type") == OtaTypeToString(OtaType::BRICK);
+  const bool package_is_ab = !has_metadata && get_value(metadata, "ota-type") == OtaTypeToString(OtaType::AB);
+  const bool package_is_brick = get_value(metadata, "ota-type") == OtaTypeToString(OtaType::BRICK);
   if (package_is_brick) {
     LOG(INFO) << "Installing a brick package";
     if (package->GetType() == PackageType::kFile &&
