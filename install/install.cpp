@@ -168,7 +168,8 @@ static bool CheckAbSpecificMetadata(const std::map<std::string, std::string>& me
   }
 
   // Check for downgrade version.
-  int64_t build_timestamp =
+  bool undeclared_downgrade = false;
+  /*int64_t build_timestamp =
       android::base::GetIntProperty("ro.build.date.utc", std::numeric_limits<int64_t>::max());
   int64_t pkg_post_timestamp = 0;
   // We allow to full update to the same version we are running, in case there
@@ -199,7 +200,7 @@ static bool CheckAbSpecificMetadata(const std::map<std::string, std::string>& me
                  << build_tag;
       return false;
     }
-  }
+  }*/
 
   return true;
 }
@@ -617,11 +618,12 @@ static InstallResult VerifyAndInstallPackage(Package* package, bool* wipe_cache,
   ui->SetProgressType(RecoveryUI::DETERMINATE);
   ui->ShowProgress(VERIFICATION_PROGRESS_FRACTION, VERIFICATION_PROGRESS_TIME);
 
-  // Verify package.
+  /*
   if (!verify_package(package, ui)) {
     log_buffer->push_back(android::base::StringPrintf("error: %d", kZipVerificationFailure));
     return INSTALL_CORRUPT;
   }
+   */
 
   // Verify and install the contents of the package.
   ui->Print("Installing update...\n");
