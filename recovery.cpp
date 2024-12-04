@@ -206,7 +206,6 @@ int set_slot(Device* device) {
     } else {
       device->GetUI()->Print("Error changing bootloader boot slot to %s", slot.c_str());
     }
-    break;
   }
   return ret.success ? 0 : 1;
 }
